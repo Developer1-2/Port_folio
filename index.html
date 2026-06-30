@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Don Mania | Backend Developer &amp; IT Solutions Specialist</title>
+<meta name="description" content="Don Mania — Backend Developer & IT Solutions Specialist. I build secure, scalable web applications, REST APIs and business systems." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+<!-- ===================== BACKGROUND DECOR (fixed, global) ===================== -->
+<div class="bg-decor" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--1"></div>
+  <div class="bg-glow bg-glow--2"></div>
+  <div class="bg-particles" id="bgParticles"></div>
+</div>
+
+<!-- ===================== NAVIGATION ===================== -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+    <a href="#home" class="navbar__logo">
+    </span>SoftWare Engineer</span>
+    </a>
+
+    <nav class="navbar__nav" id="navMenu">
+      <a href="#home" class="nav-link active" data-section="home">Home</a>
+      <a href="#about" class="nav-link" data-section="about">About</a>
+      <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+      <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+      <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+    </nav>
+
+    <a href="#contact" class="btn btn--small btn--primary navbar__cta">Let's Talk</a>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- mobile menu overlay -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" class="mobile-menu__link" data-section="home">Home</a>
+  <a href="#about" class="mobile-menu__link" data-section="about">About</a>
+  <a href="#skills" class="mobile-menu__link" data-section="skills">Skills</a>
+  <a href="#projects" class="mobile-menu__link" data-section="projects">Projects</a>
+  <a href="#contact" class="mobile-menu__link" data-section="contact">Contact</a>
+</div>
+
+<main>
+
+<!-- ===================== HERO SECTION ===================== -->
+<section class="hero" id="home">
+  <div class="hero__inner">
+
+    <!-- LEFT -->
+    <div class="hero__left" data-reveal="fade-right">
+      <p class="hero__greeting">Hello There <span class="wave">👋</span></p>
+      <h1 class="hero__name">OKELLO VINCENT</h1>
+      <h2 class="hero__title">Backend Developer &amp; IT Solutions Specialist</h2>
+
+      <div class="hero__typing">
+        <span class="hero__typing-prefix">I am a</span>
+        <span class="hero__typing-text" id="typingText"></span><span class="hero__cursor" id="typingCursor">|</span>
+      </div>
+
+      <p class="hero__desc">
+        I build secure, scalable web applications, REST APIs, business systems, and modern digital
+        solutions that solve real-world problems.
+      </p>
+
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--primary">
+          <span>Hire Me</span>
+        </a>
+        <a href="#projects" class="btn btn--secondary">
+          <span>View Projects</span>
+        </a>
+      </div>
+
+      <div class="hero__meta">
+        <div class="hero__meta-item">
+          <span class="hero__meta-number">4+</span>
+          <span class="hero__meta-label">Years Building Backends</span>
+        </div>
+        <div class="hero__meta-divider"></div>
+        <div class="hero__meta-item">
+          <span class="hero__meta-number">30+</span>
+          <span class="hero__meta-label">Systems &amp; APIs Shipped</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero__right" data-reveal="fade-left">
+      <div class="profile-composition">
+        <div class="profile-blob" aria-hidden="true"></div>
+        <div class="profile-shape profile-shape--1" aria-hidden="true"></div>
+        <div class="profile-shape profile-shape--2" aria-hidden="true"></div>
+        <div class="profile-shape profile-shape--3" aria-hidden="true"></div>
+
+        <div class="profile-grid-card" aria-hidden="true">
+          <span>def</span><span>connect</span><span>(db):</span>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-card__glass"></div>
+          <img
+            class="profile-card__image"
+            src="CEO.jpeg"
+            alt="Portrait of Don Mania, backend developer"
+            loading="eager"
+          />
+          <div class="profile-card__badge profile-card__badge--top">
+            <span class="dot dot--green"></span> Available for work
+          </div>
+          <div class="profile-card__badge profile-card__badge--bottom">
+            <span class="badge-icon">⚙️</span>
+            <div>
+              <strong>API Uptime</strong>
+              <small>99.98%</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="#about" class="scroll-indicator" aria-label="Scroll down">
+    <span class="scroll-indicator__mouse">
+      <span class="scroll-indicator__wheel"></span>
+    </span>
+    <span class="scroll-indicator__label">Scroll</span>
+  </a>
+</section>
+
+<!-- ===================== ABOUT SECTION ===================== -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <p class="section-eyebrow" data-reveal="fade-up">About Me</p>
+    <h2 class="section-title" data-reveal="fade-up">The engineer behind the architecture</h2>
+
+    <div class="about__grid">
+      <div class="about__card" data-reveal="fade-up" style="--delay:0">
+        <div class="about__icon">🧠</div>
+        <h3>Who I Am</h3>
+        <p>
+          I'm Don Mania, a backend developer and IT solutions specialist who enjoys turning
+          complex business problems into clean, dependable systems. I care about the parts
+          of the product users never see, but always feel.
+        </p>
+      </div>
+
+      <div class="about__card" data-reveal="fade-up" style="--delay:0.1s">
+        <div class="about__icon">🔥</div>
+        <h3>My Passion</h3>
+        <p>
+          I'm driven by well-structured data, predictable APIs, and systems that stay calm
+          under pressure. Designing an architecture that's easy to extend a year from now is,
+          to me, a small act of craftsmanship.
+        </p>
+      </div>
+
+      <div class="about__card" data-reveal="fade-up" style="--delay:0.2s">
+        <div class="about__icon">🧩</div>
+        <h3>My Experience</h3>
+        <p>
+          Over the years I've designed databases, built REST APIs, secured authentication
+          flows, and shipped CRUD-driven business systems for freelance clients and teams,
+          across Python, FastAPI, Django, and Flask.
+        </p>
+      </div>
+
+      <div class="about__card" data-reveal="fade-up" style="--delay:0.3s">
+        <div class="about__icon">🛠️</div>
+        <h3>What I Specialize In</h3>
+        <p>
+          REST API design, relational database architecture, authentication &amp;
+          authorization, backend security, and integrating third-party services into
+          reliable, production-ready systems.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SKILLS SECTION ===================== -->
+<section class="skills" id="skills">
+  <div class="section-inner">
+    <p class="section-eyebrow" data-reveal="fade-up">Skills</p>
+    <h2 class="section-title" data-reveal="fade-up">Tools &amp; technologies I work with</h2>
+
+    <div class="skills__grid">
+
+      <div class="skill-category" data-reveal="zoom-in" style="--delay:0">
+        <div class="skill-category__header">
+          <span class="skill-category__icon">🎨</span>
+          <h3>Frontend</h3>
+        </div>
+        <ul class="skill-list">
+          <li><span>HTML</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:90%"></div></div></li>
+          <li><span>CSS</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:88%"></div></div></li>
+          <li><span>JavaScript</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:85%"></div></div></li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-reveal="zoom-in" style="--delay:0.1s">
+        <div class="skill-category__header">
+          <span class="skill-category__icon">⚙️</span>
+          <h3>Backend</h3>
+        </div>
+        <ul class="skill-list">
+          <li><span>Python</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:95%"></div></div></li>
+          <li><span>FastAPI</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:92%"></div></div></li>
+          <li><span>Django</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:90%"></div></div></li>
+          <li><span>Flask</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:88%"></div></div></li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-reveal="zoom-in" style="--delay:0.2s">
+        <div class="skill-category__header">
+          <span class="skill-category__icon">🗄️</span>
+          <h3>Databases</h3>
+        </div>
+        <ul class="skill-list">
+          <li><span>MySQL</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:90%"></div></div></li>
+          <li><span>PostgreSQL</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:88%"></div></div></li>
+          <li><span>SQLite</span><div class="skill-bar"><div class="skill-bar__fill" style="--level:85%"></div></div></li>
+        </ul>
+      </div>
+
+      <div class="skill-category" data-reveal="zoom-in" style="--delay:0.3s">
+        <div class="skill-category__header">
+          <span class="skill-category__icon"><i class="bi bi-lock-fill"></i></span>
+          <h3>Backend Practices</h3>
+        </div>
+        <ul class="skill-list skill-list--tags">
+          <li class="tag">CRUD Operations</li>
+          <li class="tag">REST APIs</li>
+          <li class="tag">Authentication</li>
+          <li class="tag">Authorization</li>
+          <li class="tag">Backend Security</li>
+          <li class="tag">API Integration</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROJECTS SECTION ===================== -->
+<section class="projects" id="projects">
+  <div class="section-inner">
+    <p class="section-eyebrow" data-reveal="fade-up">Projects</p>
+    <h2 class="section-title" data-reveal="fade-up">Selected work</h2>
+
+    <div class="projects__grid">
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">📊</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Inventory &amp; Sales API</h3>
+          <p>A multi-tenant REST API for retail businesses to manage inventory, orders and sales analytics in real time.</p>
+          <div class="project-card__stack">
+            <span>FastAPI</span><span>PostgreSQL</span><span>JWT Auth</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0.1s">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">🏥</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Clinic Management System</h3>
+          <p>A Django-powered CRUD system for clinics to manage patients, appointments and billing securely.</p>
+          <div class="project-card__stack">
+            <span>Django</span><span>MySQL</span><span>RBAC</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0.2s">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">💳</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Payments Gateway Service</h3>
+          <p>A Flask microservice that wraps multiple payment providers behind one secure, unified REST API.</p>
+          <div class="project-card__stack">
+            <span>Flask</span><span>SQLite</span><span>API Integration</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0.3s">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">🔑</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Auth-as-a-Service</h3>
+          <p>A drop-in authentication &amp; authorization service offering token-based login, roles and permissions.</p>
+          <div class="project-card__stack">
+            <span>FastAPI</span><span>PostgreSQL</span><span>OAuth2</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0.4s">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">📦</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Logistics Tracking Platform</h3>
+          <p>A real-time shipment tracking backend with role-based dashboards for couriers, clients and admins.</p>
+          <div class="project-card__stack">
+            <span>Django</span><span>PostgreSQL</span><span>REST</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal="fade-up" style="--delay:0.5s">
+        <div class="project-card__image">
+          <div class="project-card__placeholder">📝</div>
+        </div>
+        <div class="project-card__body">
+          <h3>Client Project Manager</h3>
+          <p>An internal tool for freelancers to manage clients, invoices and project status from one dashboard.</p>
+          <div class="project-card__stack">
+            <span>Flask</span><span>SQLite</span><span>CRUD</span>
+          </div>
+          <div class="project-card__links">
+            <a href="#" class="btn btn--small btn--primary">Live Demo</a>
+            <a href="#" class="btn btn--small btn--ghost">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT SECTION ===================== -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <p class="section-eyebrow" data-reveal="fade-up">Contact</p>
+    <h2 class="section-title" data-reveal="fade-up">Let's build something reliable together</h2>
+
+    <div class="contact__grid">
+
+      <div class="contact__info" data-reveal="fade-right">
+        <p class="contact__intro">
+          Have a project in mind, or a system that needs a sturdier backend?
+          Reach out — I usually reply within a day.
+        </p>
+
+        <a href="mailto:hello@donmania.dev" class="contact__item">
+          <span class="contact__icon"><i class="bi bi-envelope-arrow-down-fill"></i></span>
+          <div>
+            <strong>Email</strong>
+            <span>hello@donmania.dev</span>
+          </div>
+        </a>
+
+        <a href="tel:+256768381442" class="contact__item">
+          <span class="contact__icon"><i class="bi bi-telephone-forward"></i></span>
+          <div>
+            <strong>Phone</strong>
+            <span>+256 700 000 000</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/" target="_blank" rel="noopener" class="contact__item">
+          <span class="contact__icon"><i class="bi bi-github"></i></span>
+          <div>
+            <strong>GitHub</strong>
+            <span>github.com/donmania</span>
+          </div>
+        </a>
+
+        <a href="https://linkedin.com/" target="_blank" rel="noopener" class="contact__item">
+          <span class="contact__icon"><i class="bi bi-linkedin"></i></span>
+          <div>
+            <strong>LinkedIn</strong>
+            <span>linkedin.com/in/donmania</span>
+          </div>
+        </a>
+      </div>
+
+      <form class="contact__form" id="contactForm" data-reveal="fade-left" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your full name" autocomplete="name" />
+          <span class="form-error" id="nameError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
+          <span class="form-error" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..."></textarea>
+          <span class="form-error" id="messageError"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">
+          <span>Send Message</span>
+        </button>
+
+        <p class="form-success" id="formSuccess">Thanks — your message has been sent. I'll get back to you soon.</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__copy">© <span id="year"></span> Okello Vincent. All rights reserved.</p>
+
+    <div class="footer__socials">
+      <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub"><i class="bi bi-github"></i></a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+      <a href="mailto:hello@donmania.dev" aria-label="Email"><i class="bi bi-envelope-arrow-down-fill"></i></a>
+    </div>
+
+    <p class="footer__credit">Designed &amp; Developed by <strong>OKELLO VINCENT</strong></p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="script.js"></script>
+</body>
+</html>
