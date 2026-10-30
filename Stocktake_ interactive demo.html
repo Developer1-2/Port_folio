@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stocktake: interactive demo</title>
+<style>
+:root{--bg:#f2f5f1;--card:#fff;--ink:#1b2a29;--mut:#5c6b6a;--line:#dbe3df;--acc:#0f5c5c;--acc-ink:#fff;--hi:#fff3d1;--bad:#b42318;--good:#067647;--chip:#dcefe9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1716;--card:#172120;--ink:#e6efed;--mut:#9ab0ad;--line:#2a3a38;--acc:#5fd3c4;--acc-ink:#06211e;--hi:#3a3115;--bad:#f97066;--good:#47cd89;--chip:#17332f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1716;--card:#172120;--ink:#e6efed;--mut:#9ab0ad;--line:#2a3a38;--acc:#5fd3c4;--acc-ink:#06211e;--hi:#3a3115;--bad:#f97066;--good:#47cd89;--chip:#17332f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;margin:0;font-weight:600}
+h1{font-size:22px}h2{font-size:20px}h3{font-size:16px;margin:0 0 6px}
+.wrap{max-width:960px;margin:0 auto;padding:14px}
+.head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.brand{display:flex;flex-direction:column}
+.brand span{color:var(--mut);font-size:13px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px}
+select,input,button{font:inherit;color:inherit}
+select,input{min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);width:100%}
+.ctl select{width:auto}
+button{min-height:44px;padding:8px 14px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink);font-weight:600;cursor:pointer}
+button.ghost{background:transparent;color:var(--acc)}
+button.link{min-height:36px;background:none;border:0;color:var(--acc);padding:4px 6px;text-decoration:underline}
+button:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.note{background:var(--hi);border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:12px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.tab{background:none;border:0;border-bottom:3px solid transparent;border-radius:0;color:var(--mut);padding:8px 14px}
+.tab.on{color:var(--ink);border-bottom-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.chip{background:var(--chip);color:var(--acc);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.mut{color:var(--mut);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}
+.stats div{background:var(--hi);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--mut)}
+.stats b{display:block;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:8px}
+.grid>*{font-variant-numeric:tabular-nums}
+.grid i{display:block;font-style:normal;color:var(--mut);font-size:12px}
+.err{color:var(--bad);font-size:13px;min-height:0}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-size:13px;color:var(--mut)}
+.sf{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 6px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--mut);font-size:13px}
+.scroll{overflow-x:auto}
+.meter{height:8px;border-radius:4px;background:var(--acc);min-width:2px}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;align-items:center;justify-content:center;padding:14px}
+#modal.show{display:flex}
+.dlg{background:var(--card);border-radius:12px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:16px}
+.warn{background:var(--hi);padding:8px 10px;border-radius:8px;margin:10px 0;font-size:14px}
+#toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;z-index:30}
+#toast.show{opacity:1}
+code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:13px}
+ul{padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="brand"><h1>Stocktake</h1><span>Inventory and sales for shops with one or many branches</span></div>
+    <div class="ctl">
+      <select id="loc" aria-label="Location"></select>
+      <select id="role" aria-label="Viewing as"><option value="owner">Viewing as owner</option><option value="sales">Viewing as salesperson</option></select>
+      <button class="ghost" id="reset">Reset demo</button>
+    </div>
+  </div>
+  <div class="note">This is a simulation that runs in your browser with sample data (amounts in UGX). Nothing is saved or sent anywhere. Try adding stock, entering unsold counts, then closing the period.</div>
+  <div class="tabs" role="tablist">
+    <button class="tab" data-t="period">Current period</button>
+    <button class="tab" data-t="report">Reports</button>
+    <button class="tab" data-t="how">How it works</button>
+  </div>
+  <div id="main"></div>
+</div>
+<div id="modal" onclick="if(event.target===this)closeModal()"></div>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s);
+const P=[{id:1,n:'Sugar 1kg',p:5000},{id:2,n:'Cooking oil 1L',p:9000},{id:3,n:'Rice 1kg',p:4500},{id:4,n:'Soap bar',p:2500},{id:5,n:'Salt 500g',p:1500}];
+const SEED={1:[50,4000,12,1],2:[30,7500,8,0],3:[60,3500,15,2],4:[80,1800,20,0],5:[40,1000,10,1]};
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+const dl=(d,y)=>d.toLocaleDateString('en-US',y?{month:'short',day:'numeric',year:'numeric'}:{month:'short',day:'numeric'});
+let D,S;
+const cur=L=>L.periods[L.periods.length-1];
+function mkPer(start,prev){
+  const end=new Date(start.getFullYear(),start.getMonth()+1,0),counts={};
+  P.forEach(p=>counts[p.id]={open:prev?prev.counts[p.id].unsold:0,oc:prev?prev.counts[p.id].cost:0,unsold:'',lost:0,price:p.p,cost:0,r:null});
+  return{label:dl(start)+' – '+dl(end,1),end,status:'open',entries:[],counts};
+}
+function calc(per,id){
+  const c=per.counts[id],es=per.entries.filter(e=>e.pid===id);
+  const add=es.reduce((a,e)=>a+e.qty,0),av=c.open+add;
+  const cost=av?(c.open*c.oc+es.reduce((a,e)=>a+e.qty*e.price,0))/av:c.oc;
+  const ok=c.unsold!=='',sold=ok?av-c.unsold-c.lost:null;
+  return{add,av,cost,sold,rev:ok?sold*c.price:0,cos:ok?sold*cost:0,es};
+}
+function doClose(L){
+  const per=cur(L);
+  P.forEach(p=>{const c=per.counts[p.id],r=calc(per,p.id);c.cost=r.cost;c.r=r});
+  per.status='closed';
+  L.periods.push(mkPer(new Date(per.end.getFullYear(),per.end.getMonth()+1,1),per));
+}
+function seed(){
+  D=[['Kampala Main',1],['Gulu Branch',.6]].map(([n,m])=>{
+    const L={name:n,periods:[mkPer(new Date(2026,8,1))]},per=L.periods[0];
+    P.forEach(p=>{const[q,b,u,l]=SEED[p.id];per.entries.push({pid:p.id,qty:Math.round(q*m),price:b});
+      const c=per.counts[p.id];c.unsold=Math.round(u*m);c.lost=Math.round(l*m)});
+    doClose(L);return L;
+  });
+  S={loc:0,tab:'period',role:'owner',stock:null,scope:'loc'};
+}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),3200)}
+function render(){
+  $('#loc').innerHTML=D.map((l,i)=>`<option value="${i}"${i===S.loc?' selected':''}>${l.name}</option>`).join('');
+  $('#role').value=S.role;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===S.tab));
+  $('#main').innerHTML=S.tab==='period'?vPeriod():S.tab==='report'?vReport():vHow();
+  if(S.tab==='period')refresh();
+}
+function vPeriod(){
+  const L=D[S.loc],per=cur(L),own=S.role==='owner';
+  return `<div class="card"><div class="top"><div><div class="mut">${L.name}</div><h2>${per.label}</h2></div><span class="chip">Open</span></div>
+  <div class="stats"><div>Revenue<b id="tr"></b></div><div>Cost of goods sold<b id="tc"></b></div><div>Profit<b id="tp"></b></div></div>
+  <div id="tm" class="mut"></div></div>
+  <div class="bar"><button class="ghost" onclick="fill()">Fill sample counts</button>
+  ${own?`<button onclick="openClose()">Close period</button>`:`<span class="mut">Only owners and managers can close a period.</span>`}</div>
+  ${P.map(p=>row(per,p)).join('')}`;
+}
+function row(per,p){
+  const c=per.counts[p.id],r=calc(per,p.id),k=n=>`data-k="${n}-${p.id}"`;
+  return `<div class="card"><div class="top"><h3>${p.n}</h3><span class="mut">Selling price ${fmt(c.price)}, average cost <span ${k('cost')}></span></span></div>
+  <div class="grid"><div><i>Opening</i>${fmt(c.open)}</div><div><i>Received</i>${fmt(r.add)}</div><div><i>Available</i><b ${k('av')}></b></div>
+  <label><i>Unsold (counted)</i><input type="number" min="0" inputmode="decimal" value="${c.unsold}" oninput="setC(${p.id},'unsold',this.value)"></label>
+  <label><i>Lost or damaged</i><input type="number" min="0" inputmode="decimal" value="${c.lost}" oninput="setC(${p.id},'lost',this.value)"></label>
+  <div><i>Sold</i><b ${k('sold')}></b></div><div><i>Revenue</i><b ${k('rev')}></b></div><div><i>Profit</i><b ${k('pr')}></b></div></div>
+  <div class="err" ${k('err')}></div>
+  <div class="foot"><span>${r.es.map(e=>`+${fmt(e.qty)} at ${fmt(e.price)}`).join(', ')||'No stock received yet'}</span><button class="link" onclick="tgl(${p.id})">Add stock</button></div>
+  ${S.stock===p.id?`<div class="sf"><label><i class="mut">Quantity</i><input id="sq" type="number" min="1" inputmode="decimal"></label><label><i class="mut">Buying price per unit</i><input id="sb" type="number" min="0" inputmode="decimal"></label><button onclick="addStock(${p.id})">Save</button></div>`:''}</div>`;
+}
+function refresh(){
+  const per=cur(D[S.loc]);let rev=0,cos=0,miss=0;
+  P.forEach(p=>{
+    const r=calc(per,p.id),el=k=>document.querySelector(`[data-k="${k}-${p.id}"]`),ok=r.sold!==null&&r.sold>=0;
+    el('cost').textContent=fmt(r.cost);el('av').textContent=fmt(r.av);
+    el('sold').textContent=r.sold===null?'–':fmt(r.sold);
+    el('rev').textContent=ok?fmt(r.rev):'–';el('pr').textContent=ok?fmt(r.rev-r.cos):'–';
+    el('err').textContent=r.sold!==null&&r.sold<0?'Unsold plus lost is more than the stock available. Check the count.':'';
+    if(ok){rev+=r.rev;cos+=r.cos}else miss++;
+  });
+  $('#tr').textContent=fmt(rev);$('#tc').textContent=fmt(cos);$('#tp').textContent=fmt(rev-cos);
+  $('#tm').textContent=miss?`${miss} of ${P.length} products still need a valid count.`:'All products counted. Ready to close.';
+}
+function setC(id,k,v){const c=cur(D[S.loc]).counts[id];c[k]=k==='unsold'?(v===''?'':Math.max(0,+v)):Math.max(0,+v||0);refresh()}
+function tgl(id){S.stock=S.stock===id?null:id;render()}
+function addStock(id){
+  const q=+$('#sq').value,b=+$('#sb').value;
+  if(!(q>0)||!($('#sb').value!=='')||b<0)return toast('Enter a quantity above zero and a buying price.');
+  cur(D[S.loc]).entries.push({pid:id,qty:q,price:b});S.stock=null;render();toast('Stock added. Average cost updated.');
+}
+function fill(){
+  const per=cur(D[S.loc]);
+  P.forEach(p=>{const c=per.counts[p.id],av=calc(per,p.id).av;c.unsold=Math.floor(av*(.3+Math.random()*.3));c.lost=(av-c.unsold>1&&Math.random()<.3)?1:0});
+  render();toast('Sample counts filled in.');
+}
+function openClose(){
+  const per=cur(D[S.loc]),rs=P.map(p=>({p,r:calc(per,p.id)}));
+  const bad=rs.filter(x=>x.r.sold===null||x.r.sold<0);
+  let tr=0,tc=0;rs.forEach(x=>{tr+=x.r.rev;tc+=x.r.cos});
+  $('#modal').innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><h2>Close ${per.label}?</h2>
+  <div class="scroll"><table><tr><th>Product</th><th>Sold</th><th>Revenue</th><th>Profit</th></tr>
+  ${rs.map(x=>`<tr><td>${x.p.n}</td><td>${x.r.sold===null?'–':fmt(x.r.sold)}</td><td>${x.r.sold===null?'–':fmt(x.r.rev)}</td><td>${x.r.sold===null?'–':fmt(x.r.rev-x.r.cos)}</td></tr>`).join('')}
+  <tr><td><b>Total</b></td><td></td><td><b>${fmt(tr)}</b></td><td><b>${fmt(tr-tc)}</b></td></tr></table></div>
+  ${bad.length?`<div class="warn">Fix the counts for: ${bad.map(x=>x.p.n).join(', ')}.</div>`:''}
+  <div class="warn">Closing cannot be undone. The unsold stock and its average cost carry into the next period as opening stock.</div>
+  <div class="bar"><button class="ghost" onclick="closeModal()">Cancel</button><button onclick="confirmClose()"${bad.length?' disabled':''}>Close period</button></div></div>`;
+  $('#modal').classList.add('show');
+}
+function closeModal(){$('#modal').classList.remove('show')}
+function confirmClose(){doClose(D[S.loc]);closeModal();S.stock=null;render();toast('Period closed. The next period is open with your unsold stock as opening stock.')}
+function aggregate(locs){
+  const a={};P.forEach(p=>a[p.id]={sold:0,rev:0,cos:0});let n=0;
+  locs.forEach(L=>L.periods.filter(x=>x.status==='closed').forEach(per=>{n++;P.forEach(p=>{const r=per.counts[p.id].r;a[p.id].sold+=r.sold;a[p.id].rev+=r.rev;a[p.id].cos+=r.cos})}));
+  return{a,n};
+}
+function vReport(){
+  if(S.role!=='owner')return `<div class="card"><h2>Reports</h2><p class="mut">Reports are limited to owners and managers. Switch to “Viewing as owner” to see them. This is how the real system hides screens by role, and the API enforces it too.</p></div>`;
+  const locs=S.scope==='all'?D:[D[S.loc]],{a,n}=aggregate(locs);
+  let tr=0,tc=0;P.forEach(p=>{tr+=a[p.id].rev;tc+=a[p.id].cos});
+  const mx=Math.max(1,...P.map(p=>a[p.id].rev-a[p.id].cos));
+  const closed=D[S.loc].periods.filter(x=>x.status==='closed');
+  return `<div class="bar"><label class="mut">Scope <select onchange="S.scope=this.value;render()"><option value="loc"${S.scope==='loc'?' selected':''}>${D[S.loc].name}</option><option value="all"${S.scope==='all'?' selected':''}>All locations</option></select></label></div>
+  <div class="card"><h2>Summary of closed periods</h2><div class="stats"><div>Revenue<b>${fmt(tr)}</b></div><div>Cost of goods sold<b>${fmt(tc)}</b></div><div>Profit<b>${fmt(tr-tc)}</b></div></div>
+  <div class="mut">${n} closed period${n===1?'':'s'} included. Open periods are left out until they are closed.</div></div>
+  <div class="card"><h3>Profit by product</h3><div class="scroll"><table><tr><th>Product</th><th>Sold</th><th>Revenue</th><th>Profit</th><th style="width:30%"></th></tr>
+  ${P.map(p=>{const x=a[p.id],pr=x.rev-x.cos;return `<tr><td>${p.n}</td><td>${fmt(x.sold)}</td><td>${fmt(x.rev)}</td><td>${fmt(pr)}</td><td><div class="meter" style="width:${Math.max(0,pr/mx*100)}%"></div></td></tr>`}).join('')}</table></div></div>
+  <div class="card"><h3>Closed periods at ${D[S.loc].name}</h3>${closed.map(per=>{let r=0,c=0;P.forEach(p=>{r+=per.counts[p.id].r.rev;c+=per.counts[p.id].r.cos});return `<div class="top" style="padding:6px 0;border-bottom:1px solid var(--line)"><span>${per.label}</span><span>Revenue ${fmt(r)}, profit ${fmt(r-c)}</span></div>`}).join('')}</div>`;
+}
+function vHow(){
+  return `<div class="card"><h2>How the system works</h2>
+  <p>Staff do not log every sale. They record stock received during the period, and at the end of the week or month they count what is left. The system works out the rest.</p>
+  <ul><li>Available = opening stock + stock received</li><li>Sold = available − unsold − lost or damaged</li>
+  <li>Average cost = (opening stock × opening cost + received stock × buying prices) ÷ available</li>
+  <li>Revenue = sold × selling price, and profit = revenue − sold × average cost</li></ul>
+  <p class="mut">Worked example: opening 10 at cost 100, then 20 received at 130 gives 30 available at an average cost of 120. With 5 unsold and 1 lost, 24 were sold. At a price of 200, revenue is 4,800, cost is 2,880 and profit is 1,920.</p></div>
+  <div class="card"><h3>What this demo shows</h3><ul>
+  <li>Each period closes into the next. Unsold stock and its cost carry over automatically.</li>
+  <li>Branches keep separate periods and stock. Switch location to see it.</li>
+  <li>Roles change what is allowed. Try “Viewing as salesperson”.</li>
+  <li>Closed periods are locked, so past profit never changes when prices change.</li></ul>
+  <p class="mut">The real system is a multi-tenant API built with FastAPI and MySQL, with a React front end. Every business’s data is isolated, and the server decides what each user may see.</p></div>`;
+}
+$('#loc').onchange=e=>{S.loc=+e.target.value;S.stock=null;render()};
+$('#role').onchange=e=>{S.role=e.target.value;render()};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.tab=t.dataset.t;render()});
+$('#reset').onclick=()=>{seed();render();toast('Demo reset to its starting data.')};
+seed();render();
+</script>
+</body>
+</html>
